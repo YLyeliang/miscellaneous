@@ -1,6 +1,21 @@
 import numpy as np
 from PIL import Image
 import cv2
+import collections
+
+class A(object):
+    def __init__(self,str=1,**kwargs):
+        self.a=str
+        self.b=2
+
+class B(A):
+    def __init__(self,**kwargs):
+        super(B,self).__init__(**kwargs)
+
+        self.a=3
+
+
+a=B(str="test")
 
 
 # cap=cv2.VideoCapture(0)

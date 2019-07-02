@@ -1,17 +1,17 @@
-import numpy as np
 import os, shutil
 import cv2
+import argparse
+# A classification labeling tool
 
-# stages=(3,4,6,3)
-# stage_blocks=stages[:4]
-# for i,block in enumerate(stage_blocks):
-#     print(64*2**i,i,block)
 
-debug = 1
+def parse_args():
+    parser=argparse.ArgumentParser(description="A classification Labeler")
+    parser.add_argument('path',help="path of images need to be labeled")
+    parser.add_argument('--class',help="class names to be saved.")
+
 
 path = "D:/images/ch05_20190526132103"
 outpath = ("D:\images/blue", "D:\images/white", "D:\images/door", "D:\images/no_cover", "D:\images/normal")
-
 
 
 def move_file(path):
