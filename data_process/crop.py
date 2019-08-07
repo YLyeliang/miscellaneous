@@ -2,8 +2,10 @@ import os
 import numpy as np
 from PIL import Image
 from lxml import etree, objectify
+import xml.etree.ElementTree as ET
 import random
 import shutil
+
 root_path = "D:/data/stitch"
 images_path = "D:/data/stitch/JPEGImages"
 annots_path = "D:/data/stitch/Annotations"
@@ -227,7 +229,7 @@ Crop_net = Random_crop(images_path, annots_path,
 Crop_net.random_crop()
 
 
-def random_sample(src_path,dst_path):
+def random_sample(src_path, dst_path):
     # 从样本中随机抽取部分作为train和test,并移动到指定文件
     src_img_path = "D:\AerialGoaf/refine2/256x256/train"
     src_path = "D:\AerialGoaf/refine2/256x256/trainannot"
@@ -244,6 +246,6 @@ def random_sample(src_path,dst_path):
         shutil.move(src_img, dst_img)
         shutil.move(src_mask, dst_mask)
 
-def write_txt(img_path,txt_path):
-    img_files=os.listdir(img_path)
-    
+
+def write_txt(img_path, txt_path):
+    img_files = os.listdir(img_path)

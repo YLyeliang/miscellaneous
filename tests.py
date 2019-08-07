@@ -2,20 +2,151 @@ import numpy as np
 from PIL import Image
 import cv2
 import collections
+from mtcv import histEqualize
+import torch
+import os
+
+concat_width=500
+img_h=4000
+
+rgb = np.zeros((img_h,concat_width,3), dtype=np.uint8)
+
+cv2.putText(rgb,"#224",(20,200),cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,5,color=(0,0,255),thickness=3)
+# cv2.imwrite("rgb.jpg",rgb)
+cv2.namedWindow("img",cv2.WINDOW_NORMAL)
+cv2.imshow("img",rgb)
+cv2.waitKey()
+
+
+
+
+
+
+
+a=['1','2','3','4','5']
+b=['a','b','c','d','e']
+a_arr=np.array(a)
+b_arr=np.array(b)
+c=np.stack((a_arr,b_arr))
+
+
+img="1_Line17_up_20190411033847_911_25km+381.3m_forward.jpg"
+img_arr=img.split('_')
+new="_".join(img_arr[1:])
+
+
+img=cv2.imread(img)
+img=histEqualize(img,space='rgb',clipLimit=10)
+cv2.namedWindow("img",cv2.WINDOW_NORMAL)
+cv2.imshow("img",img)
+cv2.waitKey()
+
+# 图像输出质量决定
+# img=cv2.imread('src_6.jpg')
+# cv2.imwrite("src_66.jpg",img,[int(cv2.IMWRITE_JPEG_QUALITY),50])
+
+
+# def show_CLAHE(path):
+#     path=
+
+
+
+
+file=os.listdir("D:/tmp/test")
+file.sort(key=lambda x:x[:-4])
+
+# a=max(None,None)
+
+
+
+a=[1,1,1,2,2,3,4,5,1,2,7,5,3,2]
+i=0
+while True:
+    j=i+1
+    while True:
+        if a[i]==a[j]:
+            del a[j]
+        else:
+            j+=1
+        if j >= len(a):
+            break
+    i+=1
+    if i == len(a)-1:
+        break
+print(a)
+
+
+
+
+
+for i in range(0):
+    print(0)
+a=[1,2,3]
+b=[4,5,6]
+c=a+b
+
+
+
+x=torch.arange(0,8).view(2,4)
+y=torch.arange(100,112).view(3,4)
+c=x[None,:,:]+y[:,None,:]
+d=c.view(-1,4)
+
+
+ratios=[0.5,1,2]
+scales=[8,16,32]
+scale =torch.Tensor(scales)
+ratio=torch.Tensor(ratios)
+w=4
+r=ratio[:,None]
+s=scale[None,:]
+res=w*r*s
+res_=res.view(-1)
+print(res)
+
+
 
 class A(object):
-    def __init__(self,str=1,**kwargs):
-        self.a=str
-        self.b=2
+    def __init__(self,name):
+        self._name=name
+        self._module_dict=dict()
 
-class B(A):
-    def __init__(self,**kwargs):
-        super(B,self).__init__(**kwargs)
+    @property
+    def name(self):
+        return self._name
 
-        self.a=3
+    @property
+    def module_dict(self):
+        return self._module_dict
+
+    def _register(self,module_class):
+        self._module_dict["wang"]=module_class
 
 
-a=B(str="test")
+    def register(self,cls):
+        self._register(cls)
+        return cls
+
+cls_A=A('loss')
+
+@cls_A.register
+class B(object):
+    def __init__(self):
+        print('haha')
+
+    @property
+    def hehe(self):
+        return self.b
+
+cls_c = cls_A.module_dict['wang']
+d=cls_c.hehe
+
+print(cls_c)
+
+debug=1
+
+
+
 
 
 # cap=cv2.VideoCapture(0)
@@ -25,7 +156,3 @@ a=B(str="test")
 #     if cv2.waitKey(1) &0xff== ord('q'):
 #         break
 
-a=['a','b']
-b='c'
-c = b in a
-debug=1
