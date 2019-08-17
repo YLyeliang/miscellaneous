@@ -55,3 +55,16 @@ def merge_bbox(A, B, diff_cond=30):
         box_new = [xmin_new, ymin_new, xmax_new, ymax_new, score]
         return box_new
     return None
+
+def bbox_area(A):
+    """
+    calculate area of a bbox.
+    :param A:
+    :return:
+    """
+    xmin,ymin,xmax,ymax,score=A
+    width=xmax-xmin
+    height=ymax-ymin
+    return width*height
+
+print(bbox_area([975,2526,1322,2845,1]))

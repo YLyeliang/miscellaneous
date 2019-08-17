@@ -5,6 +5,38 @@ import collections
 from mtcv import histEqualize
 import torch
 import os
+import logging
+
+logger=logging.getLogger()
+logging.basicConfig(
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+logger.info("haha")
+logger.info("sfasfdsafdsafads")
+
+a=[3,7,13,20,30,40]
+b=[1,3,4]
+c=[a[i] for i in b]
+
+a=list(range(10,0,-1))
+print(a)
+
+def yiled_demo(a,b):
+    for i in range(len(a)):
+        c=a[i]*b[i]
+        d=a[i]*b[i]*c
+        yield c,d
+
+a=[1,2,3,4,5]
+b=[6,7,8,9,10]
+g=yiled_demo(a,b)
+for i in range(len(a)):
+    print(g.__next__())
+
+
+# 图像输出质量决定
+img=cv2.imread('D:\stitch_test\line17_stitch/Line17_up_20190411032624_128_33km+462.6m_forward.jpg')
+cv2.imwrite("src_66.jpg",img,[int(cv2.IMWRITE_JPEG_QUALITY),40])
 
 concat_width=500
 img_h=4000
@@ -16,11 +48,6 @@ cv2.putText(rgb,"#224",(20,200),cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,5,color=(0,0,255
 cv2.namedWindow("img",cv2.WINDOW_NORMAL)
 cv2.imshow("img",rgb)
 cv2.waitKey()
-
-
-
-
-
 
 
 a=['1','2','3','4','5']
@@ -41,9 +68,7 @@ cv2.namedWindow("img",cv2.WINDOW_NORMAL)
 cv2.imshow("img",img)
 cv2.waitKey()
 
-# 图像输出质量决定
-# img=cv2.imread('src_6.jpg')
-# cv2.imwrite("src_66.jpg",img,[int(cv2.IMWRITE_JPEG_QUALITY),50])
+
 
 
 # def show_CLAHE(path):

@@ -25,14 +25,14 @@ def mv_jpg_xml():
         shutil.copy(file_abs, file_out)
         shutil.copy(img_abs, img_out)
 
-def write_txt_random_sample(img_path,txt_path):
+def write_txt_random_sample(img_path,txt_path,test_num):
     # 给定图片目录和文本目录，将文件记录到文本并输出到文本目录
     # 在过程中进行随机采样
     img_files=os.listdir(img_path)
     number=len(img_files)
     train_files=img_files
     # decide how many images used to test.
-    test_files=random.sample(img_files,45)
+    test_files=random.sample(img_files,test_num)
     for i in test_files:
         train_files.remove(i)
     train_files = [i[:-4] for i in train_files]
@@ -51,7 +51,24 @@ def write_txt_random_sample(img_path,txt_path):
         for test in test_files:
             f.write(test+'\n')
 
-img_path="D:/data/train_data/20190730/JPEGImages"
-txt_path="D:/data/train_data/20190730/ImageSets/Main"
-write_txt_random_sample(img_path,txt_path)
+def remove_jpg_according_annot(annot_path,jpg_path):
+    annots=os.listdir(annot_path)
+    for i in annots:
+        if 'xml' not in i:
+            annots.remove(i)
+    imgs = os.listdir(jpg_path)
+    for i in annots:
+        jpg=i[:-3]+'jpg'
+        imgs.remove(jpg)
+    for img in imgs:
+        os.remove(os.path.join(jpg_path,img))
+
+
+img_path="D:/data/train_data/together/JPEGImages"
+txt_path="D:/data/train_data/together/ImageSets/Main"
+
+# jpg_path="D:/data/train_data/together/JPEGImages"
+# annot_path="D:/data/train_data/together/Annotations"
+# remove_jpg_according_annot(annot_path,jpg_path)
+write_txt_random_sample(img_path,txt_path,1)
 # mv_jpg_xml()

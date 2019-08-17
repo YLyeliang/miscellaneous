@@ -67,6 +67,7 @@ def writexml(filename, head, bbxes, tail,width,height):
         f.write(objstr % ('water', bbx[0], bbx[1], bbx[2] , bbx[3]))
     f.write(tail)
     f.close()
+
 def Xml_read(dom):
     root = dom.documentElement
     size = root.getElementsByTagName('size')

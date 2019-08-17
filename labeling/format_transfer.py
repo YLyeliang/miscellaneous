@@ -68,9 +68,5 @@ class FormTransForm(object):
 
 transform=FormTransForm()
 for i in range(1,8):
-    transform.txt2xml(txt='D:/data/Camera/Camera{}_yes.txt'.format(i),xml_outpath='D:/data/Camera/Camera{}_annot'.format(i))
-
-
-
-
-
+    transform.txt2xml(txt='D:/data/Camera_pred/20190719_line10_camera/20190719_model/Camera{}_yes.txt'.format(i),
+                      xml_outpath='D:/data/Camera_pred/20190719_line10_camera/20190719_model/Camera{}_annot'.format(i))
