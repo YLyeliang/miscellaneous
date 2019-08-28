@@ -1,6 +1,8 @@
 import pandas as pd
 
-data=pd.read_excel('./duct.xlsx')
-head=data.head()
-print(head)
+df=pd.read_excel('D:/data/Camera4/line17_segments.xlsx')
+# head=data.head()
+data=df.ix[:].values
+print(data)
+# print(head)
 debug=1

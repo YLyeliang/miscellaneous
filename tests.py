@@ -7,12 +7,11 @@ import torch
 import os
 import logging
 
-logger=logging.getLogger()
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
-logger.info("haha")
-logger.info("sfasfdsafdsafads")
+
+
+arr=np.arange(0,20).reshape(4,5)
+for i in arr:
+    print(i)
 
 a=[3,7,13,20,30,40]
 b=[1,3,4]

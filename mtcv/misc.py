@@ -1,7 +1,5 @@
 import cv2
 import os
-import numpy as np
-
 
 def bgr2gray(img):
     return cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -31,6 +29,17 @@ def histEqualize(img,mode='clahe',space='gray',clipLimit=20.0):
             img=cv2.cvtColor(img,cv2.COLOR_HSV2BGR)
             return img
 
+def img2jpg(src_path,dst_path):
+    for i in range(1,8):
+        src_dir=os.path.join(src_path,'Camera{}'.format(i))
+        dst_dir =os.path.join(dst_path,'Camera{}'.format(i))
+        if not os.path.exists(dst_dir):
+            os.mkdir(dst_dir)
+        for file in os.listdir(src_dir):
+            img_path=os.path.join(src_dir,file)
+            out_path=os.path.join(dst_dir,file[:-3]+'jpg')
+            img=cv2.imread(img_path)
+            cv2.imwrite(out_path,img)
 
 def read_txt_mklist(txt_path):
     bboxes_list=[]
@@ -73,15 +82,15 @@ def shift_bboxes_to_stitch(bboxes,offset_w):
     if len(bboxes) ==0:
         return bboxes
     for i in range(len(bboxes)):
-        xmin,ymin,xmax,ymax=bboxes[i]
+        xmin,ymin,xmax,ymax,score=bboxes[i]
         xmin_new=xmin+offset_w
         xmax_new=xmax+offset_w
-        bboxes[i]=[xmin_new,ymin,xmax_new,ymax]
+        bboxes[i]=[xmin_new,ymin,xmax_new,ymax,score]
     return bboxes
 
 def draw_bboxes(img,bboxes):
     for box in bboxes:
-        cv2.rectangle(img,(box[0],box[1]),(box[2],box[3]),color=(0,0,255),thickness=2)
+        cv2.rectangle(img,(int(box[0]),int(box[1])),(int(box[2]),int(box[3])),color=(0,0,255),thickness=2)
     return img
 
 def reshape_bboxes(bboxes):
