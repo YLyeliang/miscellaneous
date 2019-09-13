@@ -1,12 +1,31 @@
 import numpy as np
-from PIL import Image
+# from PIL import Image
+import matplotlib.pyplot as plt
 import cv2
 import collections
-from mtcv import histEqualize
+import time
 import torch
+from mtcv import histEqualize
 import os
 import logging
 
+
+x=torch.arange(0,8).view(2,4)
+y=torch.arange(100,112).view(3,4)
+c=x[None,:,:]+y[:,None,:]
+d=c.view(-1,4)
+
+
+ratios=[0.5,1,2]
+scales=[8,16,32]
+scale =torch.Tensor(scales)
+ratio=torch.Tensor(ratios)
+w=4
+r=ratio[:,None]
+s=scale[None,:]
+res=w*r*s
+res_=res.view(-1)
+print(res)
 
 
 arr=np.arange(0,20).reshape(4,5)
