@@ -1,12 +1,13 @@
 import pandas as pd
 
-txt_path = "D:/data/data_extract/20190912.txt"
+txt_path = "D:/data/data_extract/20190912_2.txt"
 excel_path = 'D:/data/data_extract/提取数据20190912.xlsx'
 
-debug = 1
-df=pd.read_excel(excel_path)
-data=df.values
-print(data)
+# debug = 1
+# df = pd.read_excel(excel_path)
+# data = df.values
+# print(data)
+
 
 class Data_extractor(object):
     def __init__(self, txt_path, excel_path):
@@ -17,9 +18,8 @@ class Data_extractor(object):
 
     def process(self):
         f = open(txt_path, 'w', encoding='utf-8')
-        df = pd.read_excel(excel_path)
+        df = pd.read_excel(excel_path,sheet_name=1)
         data = df.values
-        cls = []
         for row in data:
             # extract class name and code
             if not isinstance(row[0], float) and '类别' not in row[0]:
@@ -99,6 +99,5 @@ class Data_extractor(object):
             obj_str = str(obj_list)
         return obj_str
 
-
-# DE = Data_extractor(txt_path, excel_path)
-# DE.process()
+DE = Data_extractor(txt_path, excel_path)
+DE.process()

@@ -10,6 +10,17 @@ import os
 import logging
 
 
+bgr=np.zeros((500,500,3),dtype=np.uint8)
+cv2.putText(bgr,"Test",(0,100),
+            cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 5,
+            color=(0, 0, 255), thickness=3)
+cv2.imshow("bgr",bgr)
+cv2.waitKey()
+
+
+
+
+
 x=torch.arange(0,8).view(2,4)
 y=torch.arange(100,112).view(3,4)
 c=x[None,:,:]+y[:,None,:]

@@ -1,5 +1,5 @@
 L = [9, 1, 5, 8, 3, 7, 4, 6, 2]
-lenth = len(L)
+length = len(L)
 
 
 def swap(L, i, j):
@@ -18,6 +18,28 @@ def BubbleSort(L, length):
         if not flag:
             break
     return L
+
+def SelectSort(L,length):
+    for i in range(length):
+        min=i
+        for j in range(i+1,length):
+            if L[j]<L[min]:
+                min=j
+        if not min==i:
+            swap(L,i,min)
+    return L
+
+def InsertSort(L,length):
+    L.insert(0,0)
+    for i in range(2,length):
+        if L[i] <L[i-1]:
+            L[0]=L[i]
+            j=i-1
+            while L[j]>L[0]:
+                L[j+1]=L[j]
+                j-=1
+            L[j+1]=L[0]
+    return L[1:]
 
 
 class HeapSort(object):
@@ -105,10 +127,11 @@ class QuickSort(object):
             swap(L,low,high)
         return low
 
-Q=QuickSort()
-L=Q.quicksort(L)
+# Q=QuickSort()
+# L=Q.quicksort(L)
 
-
+S=SelectSort(L,length)
+I=InsertSort(L,length)
 
 M=MergeSort()
 L=M.mergesort(L)
@@ -116,5 +139,5 @@ L=M.mergesort(L)
 heap = HeapSort()
 L = heap.heapsort(L)
 
-L = BubbleSort(L, lenth)
+L = BubbleSort(L, length)
 print(L)
