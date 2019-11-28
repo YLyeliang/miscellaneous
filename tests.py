@@ -1,5 +1,5 @@
 import numpy as np
-# from PIL import Image
+from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
 import collections
@@ -8,6 +8,14 @@ import torch
 from mtcv import histEqualize
 import os
 import logging
+
+img_path="D:/AerialGoaf/detail/512x512/label"
+name='0107_38.png'
+img=Image.open(os.path.join(img_path,name))
+arr = np.array(img)
+mask=np.sum(arr)
+rate=mask/(512*512)
+a=1
 
 
 bgr=np.zeros((500,500,3),dtype=np.uint8)

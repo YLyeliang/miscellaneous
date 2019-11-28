@@ -7,6 +7,12 @@ def g_mean1(recall,precision):
     """
     return np.sqrt(recall*precision)
 
+def g_mean2(recall,specificity):
+    """
+    Calculate G-mean 2 metric,\sqrt (Recall * Precision)
+    """
+    return np.sqrt(recall*specificity)
+
 def f_score(recall,precision,beta=1,weigh_r=None,weight_p=None):
     """
     Calculate F_score metric.
@@ -18,22 +24,22 @@ def f_score(recall,precision,beta=1,weigh_r=None,weight_p=None):
     f=(1+beta)*recall*precision/(recall+precision)
     return f
 
-a=[73.1 ,66.4]
-b=[70 ,72.2]
-c=[66.6 , 80.1]
-d=[75.2 , 49.2]
-e=[70 , 79.7]
+a=[99.6 ,99]
+b=[95.6 ,99]
+c=[71.5 , 99]
+d=[70 , 99]
+e=[70, 99]
 
 print("g-mean")
-print(g_mean1(*a))
-print(g_mean1(*b))
-print(g_mean1(*c))
-print(g_mean1(*d))
-print(g_mean1(*e))
+print(g_mean2(*a))
+print(g_mean2(*b))
+print(g_mean2(*c))
+print(g_mean2(*d))
+print(g_mean2(*e))
 
 print("f1-score")
-print(f_score(*a))
-print(f_score(*b))
-print(f_score(*c))
-print(f_score(*d))
-print(f_score(*e))
+# print(f_score(*a))
+# print(f_score(*b))
+# print(f_score(*c))
+# print(f_score(*d))
+# print(f_score(*e))

@@ -38,3 +38,12 @@ class video_io(object):
 
     def write_video(self):
         self.VideoWriter = cv2.VideoWriter(self.write, cv2.CAP_PROP_FOURCC('M', 'J', 'P', 'G'), self.fps, self.size)
+
+# video=video_io(0)
+# video.read_video()
+cap=cv2.VideoCapture(0)
+while True:
+    ret,frame=cap.read()
+    cv2.imshow("frame",frame)
+    if cv2.waitKey(1) &0xff== ord('q'):
+        break
