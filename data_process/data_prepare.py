@@ -63,12 +63,43 @@ def remove_jpg_according_annot(annot_path,jpg_path):
     for img in imgs:
         os.remove(os.path.join(jpg_path,img))
 
+def separate_img_label(dir,img_dir,label_dir):
+    """
+    Given a dir that contains images with corresponding labels, separate them into
+    two dirs that contains imgs and labels, respectively.
+    @param dir:
+    @param img_dir:
+    @param label_dir:
+    @return:
+    """
+    dir_list = os.listdir(dir)
+    if not dir_list:
+        return
+    else:
+        if not os.path.exists(img_dir):
+            os.makedirs(img_dir)
+        if not os.path.exists(label_dir):
+            os.makedirs(label_dir)
+        img_list=[]
+        label_list=[]
+        for i in dir_list:
+            if 'xml' in i:
+                label_list.append(i)
+            else:
+                img_list.append(i)
+        num = min(len(label_list),len(img_list))
+        for i in range(num):
+            shutil.copy(os.path.join(dir,img_list[i]),os.path.join(img_dir,img_list[i]))
+            shutil.copy(os.path.join(dir,label_list[i]),os.path.join(label_dir,label_list[i]))
 
-img_path="D:/data/train_data/together/JPEGImages"
-txt_path="D:/data/train_data/together/ImageSets/Main"
+
+# img_path="D:/data/train_data/together/JPEGImages"
+# txt_path="D:/data/train_data/together/ImageSets/Main"
 
 # jpg_path="D:/data/train_data/together/JPEGImages"
 # annot_path="D:/data/train_data/together/Annotations"
 # remove_jpg_according_annot(annot_path,jpg_path)
-write_txt_random_sample(img_path,txt_path,1)
+# write_txt_random_sample(img_path,txt_path,1)
 # mv_jpg_xml()
+path="D:\\zmhj_photo\\detection\\"
+separate_img_label(path,path+"img",path+"label")
