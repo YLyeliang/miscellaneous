@@ -1,6 +1,5 @@
 import cv2
 
-
 def resize(img, ratio=0.5, dsize=None):
     """
     Resize single image to desired size.
@@ -8,6 +7,8 @@ def resize(img, ratio=0.5, dsize=None):
     :param ratio: If given,image will be resize proportional to ratio.
     :return:
     """
+    if isinstance(img,str):
+        img = cv2.imread(img)
     img_h, img_w = img.shape[0], img.shape[1]
     img_h = img_h
     img_w = img_w

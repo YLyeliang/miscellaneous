@@ -1,9 +1,14 @@
 import os
 import shutil
 
-
-
 def mv_file_with_name(src,xml_dst,jpg_dst):
+    """
+    Given directory, copy all annotated files to another directory.
+    @param src:
+    @param xml_dst:
+    @param jpg_dst:
+    @return:
+    """
     files=os.listdir(src)
     xmls=[]
     for i in files:
@@ -15,16 +20,17 @@ def mv_file_with_name(src,xml_dst,jpg_dst):
         jpg_path=os.path.join(src,jpg)
         xml_path=os.path.join(src,xml)
 
-        jpg_dst=os.path.join(jpg_dst,jpg)
-        xml_dst=os.path.join(xml_dst,xml)
-        shutil.copy(jpg_path,jpg_dst)
-        shutil.copy(xml_path,xml_dst)
+        if not os.path.exists(jpg_dst):
+            os.makedirs(jpg_dst)
+        if not os.path.exists(xml_dst):
+            os.makedirs(xml_dst)
 
-for i in range(1,8):
-    yes_path="/data2/yeliang/py_project/leak_water_detect/data/20190929/line8/Camera{}_yes".format(i)
-    no_path = "/data2/yeliang/py_project/leak_water_detect/data/20190929/line8/Camera{}_no".format(i)
-    xml_dst='/data2/yeliang/py_project/leak_water_detect/data/20190929/Annotations'
-    jpg_dst='/data2/yeliang/py_project/leak_water_detect/data/20190929/JPEGImages'
-    mv_file_with_name(yes_path,xml_dst,jpg_dst)
-    mv_file_with_name(no_path,xml_dst,jpg_dst)
+        jpg_dst2=os.path.join(jpg_dst,jpg)
+        xml_dst2=os.path.join(xml_dst,xml)
+
+        shutil.copy(jpg_path,jpg_dst2)
+        shutil.copy(xml_path,xml_dst2)
+
+
+
 
