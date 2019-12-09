@@ -6,19 +6,6 @@ import xml.etree.ElementTree as ET
 import random
 import shutil
 
-root_path = "D:/data/stitch"
-images_path = "D:/data/stitch/JPEGImages"
-annots_path = "D:/data/stitch/Annotations"
-# xml_path = "D:/data/stitch/Annotations/Line12_up_20190128023906_91_0km+968.1m_forward.xml"
-out_xml = "D:/data/stitch/crop/Annotations"
-out_crop = "D:/data/stitch/crop/JPEGImages"
-
-
-# img_path = os.path.join(images_path, "Line12_up_20190128023906_91_0km+968.1m_forward.jpg")
-# img =cv.imread(img_path)
-# img = Image.open(img_path)
-# img2 = img.crop((400, 0, 400+width, height))  # (left, upper, right, lower)
-
 # E = objectify.ElementMaker(annotate=False)
 # anno_tree = E.annotation(
 #     E.folder('VOC2007'),
@@ -48,9 +35,7 @@ out_crop = "D:/data/stitch/crop/JPEGImages"
 # anno_tree.append(subtree)
 # etree.ElementTree(anno_tree).write("text.xml", pretty_print=True)
 
-
 # tree.write("demo.xml",encoding='utf-8',xml_declaration=False)
-
 
 def load_annot(xml_path):
     tree = ET.parse(xml_path)
@@ -75,6 +60,12 @@ def load_annot(xml_path):
 
 
 class Random_crop(object):
+    """
+    Random crop images with annotated bboxes.
+    Image path, annots path, out annots path, and out cropped image path should be given.
+    The height and width of cropped image should be specified, and iteration time for a image
+    should be specified, and the condtion
+    """
     def __init__(self, images_path, annots_path, out_xmls, out_crops,
                  crop_width=2048, crop_height=4000, crop_time=50, dist_cond=500):
         self.images_path = images_path
@@ -85,6 +76,12 @@ class Random_crop(object):
         self.crop_height = crop_height
         self.crop_time = crop_time
         self.dist_cond = dist_cond
+
+    def check_exist(self):
+        if not os.path.exists(self.out_xmls):
+            os.makedirs(self.out_xmls)
+        if not os.path.exists(self.out_crops):
+            os.makedirs(self.out_crops)
 
     def load_annot(self, xml_path):
         tree = ET.parse(xml_path)
@@ -144,10 +141,11 @@ class Random_crop(object):
         return tree
 
     def random_crop(self):
-        for annots in os.listdir(annots_path):
+        self.check_exist()
+        for num,annots in enumerate(os.listdir(self.annots_path)):
             count = 0
             # load annotation informations.
-            img_name, bboxes, width, height = self.load_annot(os.path.join(annots_path, annots))
+            img_name, bboxes, width, height = self.load_annot(os.path.join(self.annots_path, annots))
             assert isinstance(width, int) and isinstance(height, int)
 
             # set image name and load image.
@@ -165,11 +163,13 @@ class Random_crop(object):
                 crop_save = os.path.join(self.out_crops, crop_name)
                 self.annot_tree = self.init_xml(crop_name)
 
-                # start crop.
+                # start crop. Initialize cropped image patches.
                 crop_xmin = np.random.randint(0, width - self.crop_width)
                 crop_xmax = crop_xmin + self.crop_width
+                crop_ymin = np.random.randint(0,height - self.crop_height)
+                crop_ymax = crop_ymin+self.crop_height
 
-                # when crop,remove those very close patches.
+                # when crop, remove those very close patches.
                 if len(x_arr) > 0:
                     dist = [abs(i - crop_xmin) for i in x_arr]
                     dist.sort()
@@ -177,7 +177,7 @@ class Random_crop(object):
                         continue
 
                 # crop image
-                img_crop = img.crop((crop_xmin, 0, crop_xmax, self.crop_height))
+                img_crop = img.crop((crop_xmin, crop_ymin, crop_xmax, crop_ymax))
                 crop_bboxes = []
                 # check boundary between box and crop image.
                 for box in bboxes:
@@ -188,12 +188,15 @@ class Random_crop(object):
                     # if box not in crop image,continue.
                     if box_xmin >= crop_xmax or box_xmax <= crop_xmin:
                         continue
+                    if box_ymin >= crop_ymax or box_ymax <=crop_ymin:
+                        continue
 
-                    # 如果裁剪图片从box中间切开，且在box左边
+                    # 如果裁剪图片从box中间切开，且在box右边
                     if box_xmin < crop_xmin and box_xmax > crop_xmin:
                         cpbox_xmin = crop_xmin
                         cpbox_xmax = box_xmax
-                    # 在box右边
+
+                    # 在box左边
                     elif box_xmin < crop_xmax and box_xmax > crop_xmax:
                         cpbox_xmin = box_xmin
                         cpbox_xmax = crop_xmax
@@ -201,11 +204,27 @@ class Random_crop(object):
                     else:
                         cpbox_xmin = box_xmin
                         cpbox_xmax = box_xmax
+
+                    # 判断y方向上的bbox与cropped image的交叠情况
+                    # 如果裁剪图片从box中间切开，且在box下方
+                    if box_ymin < crop_ymin and box_ymax > crop_ymin:
+                        cpbox_ymin = crop_ymin
+                        cpbox_ymax = box_ymax
+
+                    # 在box上方
+                    elif box_ymin < crop_ymax and box_ymax > crop_ymax:
+                        cpbox_ymin = box_ymin
+                        cpbox_ymax = crop_ymax
+                    # 包含box
+                    else:
+                        cpbox_ymin = box_ymin
+                        cpbox_ymax = box_ymax
+
                     # set relative coordinate to crop image.
                     rel_xmin = cpbox_xmin - crop_xmin
                     rel_xmax = cpbox_xmax - crop_xmin
-                    rel_ymin = box_ymin
-                    rel_ymax = box_ymax
+                    rel_ymin = cpbox_ymin - crop_ymin
+                    rel_ymax = cpbox_ymax - crop_ymin
                     crop_box = [rel_xmin, rel_ymin, rel_xmax, rel_ymax]
                     crop_bboxes.append(crop_box)
 
@@ -223,8 +242,6 @@ class Random_crop(object):
                 img_crop.save(crop_save)
                 count += 1
 
+            print("The {}th image cropped {} patches.".format(num,count))
 
-Crop_net = Random_crop(images_path, annots_path,
-                       out_xml, out_crop, crop_time=500)
-Crop_net.random_crop()
 
