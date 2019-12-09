@@ -126,7 +126,7 @@ class Random_crop(object):
     def write_box(self, tree, xmin, ymin, xmax, ymax):
         E = objectify.ElementMaker(annotate=False)
         subtree = E.object(
-            E.name('water'),
+            E.name('crack'),
             E.pose('Unspecified'),
             E.truncated(0),
             E.difficult(0),
