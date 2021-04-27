@@ -100,6 +100,20 @@ def reshape_bboxes(bboxes):
           box+=[j]
     return box
 
+def minAreaRect(contours):
+    """given a set of contours, return minArea Rectangles and contour area."""
+    rect_keep = []
+    area = []
+    for i in contours:
+        rect = cv2.minAreaRect(i)
+        rect_keep.append(rect)
+        area_ = cv2.contourArea(i)
+        area.append(area_)
+    return rect_keep, area
+
+def findContours(img,mode=cv2.RETR_TREE,method=cv2.CHAIN_APPROX_SIMPLE):
+    return cv2.findContours(img,mode,method)
+
 # path = "/data2/yeliang/data/stitch_test/bbox"
 # array=read_txt_mklist(path)
 # # array=np.array(array)

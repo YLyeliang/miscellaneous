@@ -5,9 +5,9 @@ import cv2
 import numpy as np
 
 # xml_path="./1_Line17_up_20190411032509_29_34km+484.4m_forward.xml"
-annot_path="D:/data/stitch/crop/Annotations"
-img_path = "D:/py_project/mmdetection_notes/results/crop"
-out_path= "D:/data/visualization_leakageDataset/crop/compare_crop"
+annot_path="D:\zmhj_photo\detection\label"
+img_path = "D:\zmhj_photo\detection\img"
+out_path= "D:\zmhj_photo\detection\gt"
 def load_annot(xml_path):
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -33,8 +33,8 @@ def show_img_annot(img_path,bboxes,out=None):
     img = cv2.imread(img_path)
     if img is None: return None
     for bbox in bboxes:
-        cv2.rectangle(img,(bbox[0],bbox[1]),(bbox[2],bbox[3]),color=(0,0,255),thickness=1)
-        cv2.putText(img,"water",(bbox[0],bbox[3]),cv2.FONT_HERSHEY_COMPLEX,1,color=(255,0,0),thickness=2)
+        cv2.rectangle(img,(bbox[0],bbox[1]),(bbox[2],bbox[3]),color=(0,0,255),thickness=2)
+        cv2.putText(img,"crack",(bbox[0],bbox[1]),cv2.FONT_HERSHEY_COMPLEX,1,color=(255,255,255),thickness=1)
     if out is not None:
         cv2.imwrite(out,img)
     else:

@@ -1,6 +1,23 @@
 import os
 import shutil
 import random
+from PIL import Image
+import cv2
+import numpy as np
+
+def draw_mask(img,mask,out):
+    image=cv2.imread(img)
+    label=cv2.imread(mask,0)
+    h,w=label.shape
+    for i in range(h):
+        for j in range(w):
+            if label[j][i]>0:
+                image[j][i]=[0,0,125]
+    cv2.imwrite(out,image)
+
+draw_mask("E:\\research/dissertation\\image\\section_2\\066_29.png","E:\\research\\dissertation\\image\\section_2\\066_29_mask.png","E:\\research/dissertation\\image\\section_2\\066_29_added.png")
+
+
 
 def random_sample(src_path, dst_path):
     # 从样本中随机抽取部分作为train和test,并移动到指定文件

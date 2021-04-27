@@ -105,6 +105,33 @@ class MergeSort(object):
         self.MSort(L, L, 0, len(L) - 1)
         return L
 
+class MergeSort_2(object):
+
+    def merge_sort(self,items, comp=lambda x, y: x <= y):
+        """归并排序(分治法)"""
+        if len(items) < 2:
+            return items[:]
+        mid = len(items) // 2
+        left = self.merge_sort(items[:mid], comp)
+        right = self.merge_sort(items[mid:], comp)
+        return self.merge(left, right, comp)
+
+
+    def merge(self,items1, items2, comp):
+        """合并(将两个有序的列表合并成一个有序的列表)"""
+        items = []
+        index1, index2 = 0, 0
+        while index1 < len(items1) and index2 < len(items2):
+            if comp(items1[index1], items2[index2]):
+                items.append(items1[index1])
+                index1 += 1
+            else:
+                items.append(items2[index2])
+                index2 += 1
+        items += items1[index1:]
+        items += items2[index2:]
+        return items
+
 class QuickSort(object):
     def quicksort(self,L):
         L=self.QSort(L,0,len(L)-1)
@@ -127,17 +154,18 @@ class QuickSort(object):
             swap(L,low,high)
         return low
 
-# Q=QuickSort()
-# L=Q.quicksort(L)
+Q=QuickSort()
+L=Q.quicksort(L)
 
-S=SelectSort(L,length)
-I=InsertSort(L,length)
+# S=SelectSort(L,length)
+# I=InsertSort(L,length)
 
-M=MergeSort()
-L=M.mergesort(L)
+# M=MergeSort_2()
+# M.merge_sort(L)
+# L=M.mergesort(L)
 
-heap = HeapSort()
-L = heap.heapsort(L)
+# heap = HeapSort()
+# L = heap.heapsort(L)
 
-L = BubbleSort(L, length)
+# L = BubbleSort(L, length)
 print(L)

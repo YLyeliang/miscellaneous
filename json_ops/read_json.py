@@ -7,6 +7,8 @@ import seaborn as sns
 # 支持中文
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+plt.rcParams['xtick.direction'] = 'in'#将x周的刻度线方向设置向内
+plt.rcParams['ytick.direction'] = 'in'#将y轴的刻度方向设置向内
 
 root = 'D:/tmp/mmdet_crack/goaf'
 
@@ -89,20 +91,21 @@ for i, dir in enumerate(dirs):
 step = [50 * i for i in range(min(length))]
 fig = plt.figure(figsize=(9, 6), dpi=600)
 for i, key in enumerate(losses):
-    plt.plot(step, losses[key][0][:min(length)], c=color[i], label=key)  # 1 means reg loss, 0 means cls loss.
+    plt.plot(step, losses[key][1][:min(length)], c=color[i], label=key)  # 1 means reg loss, 0 means cls loss.
     # plt.tick_params(labelsize=18)
     # plt.plot(step,ss_loss,c='blue',label="training set B")
     plt.tick_params(labelsize=18)
-    plt.ylim(0, 5)
+    # plt.ylim(0, 5) # cls
+    plt.ylim(0, 3) # reg
     # plt.xticks(range(0,50001,10000))
     # plt.yticks()
 # plt.xlabel("Iterations",fontsize=18)
-plt.xlabel("本文算法", fontsize=18)
+plt.xlabel("迭代次数", fontsize=18)
 # plt.ylabel("Classification loss",fontsize=18)
-plt.ylabel("分类损失", fontsize=18)
+plt.ylabel("回归损失", fontsize=18)
 # plt.ylabel("Regression loss",fontsize=18)
 plt.legend(names, fontsize=16)
 plt.show()
-fig.savefig("cls-loss.png", dpi=300) # cls-loss.pdf
+fig.savefig("reg_loss.pdf", dpi=300)  # cls-loss.pdf
 
 debug = 1

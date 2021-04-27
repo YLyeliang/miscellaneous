@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+# 支持中文
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 def bar_chart():
     # bar chart
-    label=["Recall","Precision",'AP']
+    label=["召回率","精准率",'平均精度']
     index = np.arange(3)
     size1=[0.804,0.850,0.767]
     size2=[0.797,0.825,0.753]
@@ -44,6 +48,6 @@ def bar_chart():
     #     ax1.text(b.get_x()+b.get_width()/2,h+0.2,str(h),ha='center',va='bottom',fontsize=14)
     # plt.savefig("D:/latex_project/crack_detection_D/image/param_infer.png")
     plt.show()
-    fig.savefig("size-performance.pdf",dpi=600)
+    fig.savefig("size-performance.png",dpi=600)
 
 bar_chart()

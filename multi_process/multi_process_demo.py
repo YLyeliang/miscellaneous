@@ -1,44 +1,51 @@
-import multiprocessing as mp
+from time import sleep
+from threading import Thread, Lock
 
 
-def fib(n):
-    if n <= 2:
-        return 1
-    elif n == 0:
-        return 0
-    elif n < 0:
-        raise Exception('fib(n) is undefined for n < 0')
-    return fib(n - 1) + fib(n - 2)
+class Account(object):
+
+    def __init__(self):
+        self._balance = 0
+        self._lock = Lock()
+
+    def deposit(self, money):
+        # 先获取锁才能执行后续的代码
+        self._lock.acquire()
+        try:
+            new_balance = self._balance + money
+            sleep(0.01)
+            self._balance = new_balance
+        finally:
+            # 在finally中执行释放锁的操作保证正常异常锁都能释放
+            self._lock.release()
+
+    @property
+    def balance(self):
+        return self._balance
 
 
-def worker(inq, outq):
-    while True:
-        data = inq.get()
-        if data is None:
-            return
-        fn, arg = data
-        outq.put(fn(arg))
+class AddMoneyThread(Thread):
+
+    def __init__(self, account, money):
+        super().__init__()
+        self._account = account
+        self._money = money
+
+    def run(self):
+        self._account.deposit(self._money)
+
+
+def main():
+    account = Account()
+    threads = []
+    for _ in range(100):
+        t = AddMoneyThread(account, 1)
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
+    print('账户余额为: ￥%d元' % account.balance)
+
 
 if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n', type=int, default=4)
-    parser.add_argument('number', type=int, nargs='?', default=3)
-    args = parser.parse_args()
-
-    assert args.n >= 1, 'The number of threads has to be > 1'
-
-    tasks = mp.Queue()
-    results = mp.Queue()
-    for i in range(args.n):
-        tasks.put((fib, args.number))
-
-    for i in range(args.n):
-        mp.Process(target=worker, args=(tasks, results)).start()
-
-    for i in range(args.n):
-        print(results.get())
-
-    for i in range(args.n):
-        tasks.put(None)
+    main()

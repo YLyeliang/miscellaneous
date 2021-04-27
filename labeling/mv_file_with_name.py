@@ -32,5 +32,44 @@ def mv_file_with_name(src,xml_dst,jpg_dst):
         shutil.copy(xml_path,xml_dst2)
 
 
+def mv_file_with_same_name(src,obj,dst):
+    """
+    Given src directory, and obj directory, all files in src having same name with ones in obj
+    will be moved to dst.
+    @param src:
+    @param obj:
+    @param dst:
+    @return:
+    """
+    files=os.listdir(obj)
+    for file in files:
+        src_file=os.path.join(src,file)
+        dst_file =os.path.join(dst,file)
+        shutil.copy(src_file,dst_file)
 
+def mv_file_exclude_name(src,obj,dst):
+    """
+    Given src directory, and obj directory, all files in src exclude ones having same name with ones in obj
+    will be moved to dst
+    @param src:
+    @param obj:
+    @param dst:
+    @return:
+    """
+    files=os.listdir(src)
+    obj_files=os.listdir(obj)
+    src_files=[]
+    for file in files:
+        if file not in obj_files:
+            src_files.append(file)
+    for file in src_files:
+        src_file=os.path.join(src,file)
+        dst_file=os.path.join(dst,file)
+        shutil.copy(src_file,dst_file)
+
+# mv_file_exclude_name("D:\AerialGoaf\detail\\resource\\label","D:\AerialGoaf\detail\\resource\site1","D:\AerialGoaf\detail\\resource\site2label")
+
+mv_file_with_same_name("D:\AerialGoaf\detail\\512x512\label",
+                       "D:\AerialGoaf\detail\\512x512\siteB",
+                       "D:\AerialGoaf\detail\\512x512\siteBlab")
 

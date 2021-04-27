@@ -12,19 +12,18 @@ def line_chart():
         ss_loss.append(row[5])
 
     step=[100*i for i in range(len(msi_loss))]
-    fig=plt.figure(figsize=(9,6))
+    fig=plt.figure(figsize=(9,6),dpi=256)
     plt.plot(step,msi_loss,c='red',label="training set A")
+    # plt.tick_params(labelsize=18)
     plt.plot(step,ss_loss,c='blue',label="training set B")
-    plt.tick_params(labelsize=16)
-    plt.tick_params(labelsize=16)
+    plt.tick_params(labelsize=18)
     plt.ylim(0,0.7)
     # plt.xticks(range(0,50001,10000))
     # plt.yticks()
-
-    plt.xlabel("Iterations",fontsize=16)
-    plt.ylabel("loss",fontsize=16)
-    plt.legend()
-    plt.savefig("D:/latex_project/crack_detection_D/image/loss_map.png")
+    plt.xlabel("Iterations",fontsize=18)
+    plt.ylabel("loss",fontsize=18)
+    plt.legend(['training set A','training set B'],fontsize=16)
+    plt.savefig("D:/latex_project/Access-crack-recognition-revise/image/loss_map.png")
     plt.show()
 
 line_chart()

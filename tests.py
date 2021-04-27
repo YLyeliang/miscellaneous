@@ -4,26 +4,29 @@ import matplotlib.pyplot as plt
 import cv2
 import collections
 import time
-import torch
+# import torch
 from mtcv import histEqualize
 import os
 import logging
-
-img_path="D:/AerialGoaf/detail/512x512/label"
-name='0107_38.png'
-img=Image.open(os.path.join(img_path,name))
-arr = np.array(img)
-mask=np.sum(arr)
-rate=mask/(512*512)
-a=1
+from mtcv.image import resize
 
 
-bgr=np.zeros((500,500,3),dtype=np.uint8)
-cv2.putText(bgr,"Test",(0,100),
-            cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 5,
-            color=(0, 0, 255), thickness=3)
-cv2.imshow("bgr",bgr)
-cv2.waitKey()
+
+# img_path="D:/AerialGoaf/detail/512x512/label"
+# name='0107_38.png'
+# img=Image.open(os.path.join(img_path,name))
+# arr = np.array(img)
+# mask=np.sum(arr)
+# rate=mask/(512*512)
+# a=1
+#
+#
+# bgr=np.zeros((500,500,3),dtype=np.uint8)
+# cv2.putText(bgr,"Test",(0,100),
+#             cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 5,
+#             color=(0, 0, 255), thickness=3)
+# cv2.imshow("bgr",bgr)
+# cv2.waitKey()
 
 
 
